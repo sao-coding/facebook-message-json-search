@@ -1,12 +1,18 @@
 import json
 import datetime
-count = 0
-sum = 0
 date = []
 name = []
 chat = []
-search = input("輸入想搜尋的關鍵字:")
-print()
+def search_chat(search):
+    count = 0
+    number = 0
+    for i in range(len(chat)):
+        count += 1
+        if search in chat[i]:
+            number += 1
+            print("代號",number,"第"+str(count)+"則訊息\n"+name[i],date[i]+"\n\n"+chat[i]+"\n")
+            print('------------------------')
+    print("總共搜尋到",number,"結果")
 # 開啟 JSON 檔案
 for _ in range(1,11):
     with open("/home/coder/project/messenger/message_"+str(_)+".json") as f:
