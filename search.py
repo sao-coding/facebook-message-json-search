@@ -22,6 +22,8 @@ for _ in range(1,11):
                 chat.append(item["content"].encode('latin1').decode('utf8'))
             except:
                 chat.append("已收回")
+date.reverse()
+name.reverse()
 chat.reverse()
 for z in range(len(chat)):
     count += 1
