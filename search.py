@@ -1,5 +1,7 @@
+from ast import keyword
 import json
 import datetime
+import os
 
 date = []
 name = []
@@ -13,6 +15,7 @@ def all_history():
         count += 1
         print("第"+str(count)+"則訊息\n"+name[i],date[i]+"\n\n"+chat[i]+"\n")
         print('------------------------')
+    os.system("pause")
 
 def search_date(date_input):
     count = 0
@@ -22,17 +25,30 @@ def search_date(date_input):
         if date_input in date[i]:
             print("第"+str(count)+"則訊息\n"+name[i],date[i]+"\n\n"+chat[i]+"\n")
             print('------------------------')
+    os.system("pause")
 
 def search_chat(search):
     count = 0
     number = 0
+    keywords = {}
+    print("搜尋訊息",search)
     for i in range(len(chat)):
         count += 1
         if search in chat[i]:
             number += 1
+            keywords[number] = count
             print("代號",number,"第"+str(count)+"則訊息\n"+name[i],date[i]+"\n\n"+chat[i]+"\n")
             print('------------------------')
     print("總共搜尋到",number,"結果")
+    view = int(input("要檢視的代號?:"))
+    history = int(input("要檢視前後幾則訊息"))
+    scan = keywords[view]-history
+    for i in range(history*2+1):
+        if scan < 0:
+            break
+        print("第"+str(scan+1)+"則訊息\n"+name[scan],date[scan]+"\n\n"+chat[scan]+"\n")
+        scan += 1
+    os.system("pause")
 
 
 for _ in range(1,11):
@@ -53,19 +69,22 @@ date.reverse()
 name.reverse()
 chat.reverse()
 
-# 1. 顯示完整聊天紀錄 2. 顯示某一天的聊天紀錄 3. 搜尋關鍵字訊息
-mode = int(input("請選擇查詢模式\n1.顯示完整聊天紀錄\n2.顯示某一天的聊天紀錄\n3.搜尋關鍵字訊息\n"))
+while True:
+    # 1. 顯示完整聊天紀錄 2. 顯示某一天的聊天紀錄 3. 搜尋關鍵字訊息 4. 離開程式
+    mode = int(input("1. 顯示完整聊天紀錄\n2. 顯示某一天的聊天紀錄\n3. 搜尋關鍵字訊息\n4. 離開程式\n"))
 
-if mode == 1:
-    all_history()
-elif mode == 2:
-    date_input = input("輸入想查詢的日期(格式:YYYY-MM-DD):")
-    search_date(date_input)
+    if mode == 1:
+        all_history()
+    elif mode == 2:
+        date_input = input("輸入想查詢的日期(格式:YYYY-MM-DD):")
+        search_date(date_input)
 
-elif mode == 3:
-    search = input("輸入想搜尋的關鍵字:")
-    print()
-    print('------------------------')
-    search_chat(search)
-# view = int(input("要檢視的代號?:"))
-# history = int(input("要檢視前後幾則訊息"))
+    elif mode == 3:
+        search = input("輸入想搜尋的關鍵字:")
+        print()
+        print('------------------------')
+        search_chat(search)
+    else:
+        print("程式結束")
+        os.system("pause")
+        exit()
