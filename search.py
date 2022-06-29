@@ -3,6 +3,7 @@ import datetime
 import time
 import os
 
+file = []
 date = []
 name = []
 chat = []
@@ -67,30 +68,74 @@ def search_chat(search):
         print('------------------------')
         scan += 1
     os.system("pause")
+    input("test")
 
 def choose_chat(keywords):
-    try:
-        view = int(input("要檢視的代號?:"))
+    # try:
+    print("重新搜尋請在代號輸入0")
+    view = int(input("要檢視的代號?:"))
+    if view != 0:
         history = int(input("要檢視前後幾則訊息?:"))
         if view in keywords:
             scan = keywords[view]-history
+            print(view,history,scan)
+            return view,history,scan
         else:
             print('------------------------')
             print("沒有此代號\n請重新輸入")
             print('------------------------')
-            view,history,scan = choose_chat(keywords)
-    except:
+            choose_chat(keywords)
+    else:
+        menu()
+    # except:
+    #     print('------------------------')
+    #     print("輸入錯誤\n請重新輸入")
+    #     print('------------------------')
+    #     choose_chat(keywords)
+    
+
+def menu():
+    # os.system('clear')
+    input("請按Enter鍵開始搜尋")
+    os.system('clear')
+    # try:
+    print("輸入完請按Enter鍵繼續")
+    # 1. 顯示完整聊天紀錄 2. 顯示某一天的聊天紀錄 3. 搜尋關鍵字訊息 4. 離開程式
+    mode = int(input("1. 顯示完整聊天紀錄\n2. 顯示某一天的聊天紀錄\n3. 搜尋關鍵字訊息\n4. 離開程式\n"))
+    if mode == 1:
+        all_history()
+    elif mode == 2:
+        date_input = input("輸入想查詢的日期(格式:YYYY-MM-DD):")
+        search_date(date_input)
+    elif mode == 3:
+        search = input("輸入想搜尋的關鍵字:")
+        print()
+        print('------------------------')
+        search_chat(search)
+    elif mode == 4:
+        print("程式結束")
+        os.system("pause")
+        exit()
+    else:
+        print("test1")
         print("輸入錯誤\n請重新輸入")
-        view,history,scan = choose_chat(keywords)
-    return view,history,scan
+        time.sleep(1)
+    # except:
+    #     print("test2")
+    #     print("輸入錯誤\n請重新輸入")
+    #     continue
 
-for _ in range(1,11):
-    with open("./messenger/message_"+str(_)+".json", encoding="utf-8") as f:
 
+for files in os.listdir("./messenger"):
+    if files.endswith(".json"):
+        file.append(files)
+file.sort(key=lambda x: int(x.split('.')[0][8:]))
+# print("檔案名稱:",file)
+for _ in file:
+    with open("./messenger/"+_, encoding="utf-8") as f:
         # 讀取 JSON 檔案
         messenger = json.load(f)
         # .encode('latin1').decode('utf8')
-
         for item in messenger["messages"]:
             try:
                 date.append(str(datetime.datetime.fromtimestamp(item["timestamp_ms"]/1000,datetime.timezone(datetime.timedelta(hours=8))))[:19])
@@ -103,32 +148,4 @@ name.reverse()
 chat.reverse()
 
 while True:
-    os.system('clear')
-    input("請按Enter鍵開始搜尋")
-    os.system('clear')
-    try:
-        print("輸入完請按Enter鍵繼續")
-        # 1. 顯示完整聊天紀錄 2. 顯示某一天的聊天紀錄 3. 搜尋關鍵字訊息 4. 離開程式
-        mode = int(input("1. 顯示完整聊天紀錄\n2. 顯示某一天的聊天紀錄\n3. 搜尋關鍵字訊息\n4. 離開程式\n"))
-
-        if mode == 1:
-            all_history()
-        elif mode == 2:
-            date_input = input("輸入想查詢的日期(格式:YYYY-MM-DD):")
-            search_date(date_input)
-
-        elif mode == 3:
-            search = input("輸入想搜尋的關鍵字:")
-            print()
-            print('------------------------')
-            search_chat(search)
-        elif mode == 4:
-            print("程式結束")
-            os.system("pause")
-            exit()
-        else:
-            print("輸入錯誤\n請重新輸入")
-            time.sleep(1)
-    except:
-        print("輸入錯誤\n請重新輸入")
-        continue
+    menu()
