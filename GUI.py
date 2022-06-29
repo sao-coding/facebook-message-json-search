@@ -1,10 +1,8 @@
-from tkinter import *
+# from tkinter import *
 
-window = Tk()
-window.title("Welcome to my first window")
-window.geometry('350x200')
-
-
+# window = Tk()
+# window.title("Welcome to my first window")
+# window.geometry('350x200')
 
 
 
@@ -12,4 +10,6 @@ window.geometry('350x200')
 
 
 
-window.mainloop()
+
+
+# window.mainloop()
