@@ -41,12 +41,15 @@ def search_chat(search):
             print('------------------------')
     print("總共搜尋到",number,"結果")
     view = int(input("要檢視的代號?:"))
-    history = int(input("要檢視前後幾則訊息"))
+    history = int(input("要檢視前後幾則訊息?:"))
+    os.system('clear')
+    print("代號",view,"第"+str(keywords[view])+"則訊息的前後搜尋結果:")
     scan = keywords[view]-history
     for i in range(history*2+1):
         if scan < 0:
             break
-        print("第"+str(scan+1)+"則訊息\n"+name[scan],date[scan]+"\n\n"+chat[scan]+"\n")
+        print("第"+str(scan)+"則訊息\n"+name[scan],date[scan]+"\n\n"+chat[scan]+"\n")
+        print('------------------------')
         scan += 1
     os.system("pause")
 
