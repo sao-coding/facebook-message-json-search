@@ -3,6 +3,7 @@ import datetime
 import time
 import os
 
+stop = False
 file = []
 date = []
 name = []
@@ -46,29 +47,22 @@ def search_chat(search):
 
     while scan <= 0:
         view,history,scan = choose_chat(keywords)
-    #     if view in keywords:
-    #         scan = keywords[view]-history
-    #     else:
-    #         print('------------------------')
-    #         print("沒有此代號\n請重新輸入")
-    #         print('------------------------')
-    #         view,history = choose_chat()
         if scan <= 0:
             print('------------------------')
             print("搜尋範圍超出範圍\n請重新輸入")
             print('------------------------')
         else:
-            os.system('clear')
+            os.system('cls')
 
     print("代號",view,"第"+str(keywords[view])+"則訊息的前後搜尋結果:")
-    # print(keywords)
+
     for i in range(history*2+1):
 
         print("第"+str(scan)+"則訊息\n"+name[scan-1],date[scan-1]+"\n\n"+chat[scan-1]+"\n")
         print('------------------------')
         scan += 1
     os.system("pause")
-    input("test")
+
 
 def choose_chat(keywords):
     try:
@@ -95,9 +89,10 @@ def choose_chat(keywords):
     return view,history,scan
 
 def menu():
-    # os.system('clear')
+    global stop
+    # os.system('cls')
     input("請按Enter鍵開始搜尋")
-    os.system('clear')
+    os.system('cls')
     try:
         print("輸入完請按Enter鍵繼續")
         # 1. 顯示完整聊天紀錄 2. 顯示某一天的聊天紀錄 3. 搜尋關鍵字訊息 4. 離開程式
@@ -113,11 +108,8 @@ def menu():
             print('------------------------')
             search_chat(search)
         elif mode == 4:
-            print("程式結束")
-            os.system("pause")
-            exit()
+            stop = True
         else:
-            print("test1")
             print("輸入錯誤\n請重新輸入")
             time.sleep(1)
     except:
@@ -129,12 +121,11 @@ for files in os.listdir("./messenger"):
     if files.endswith(".json"):
         file.append(files)
 file.sort(key=lambda x: int(x.split('.')[0][8:]))
-# print("檔案名稱:",file)
+
 for _ in file:
     with open("./messenger/"+_, encoding="utf-8") as f:
         # 讀取 JSON 檔案
         messenger = json.load(f)
-        # .encode('latin1').decode('utf8')
         for item in messenger["messages"]:
             try:
                 date.append(str(datetime.datetime.fromtimestamp(item["timestamp_ms"]/1000,datetime.timezone(datetime.timedelta(hours=8))))[:19])
@@ -145,6 +136,7 @@ for _ in file:
 date.reverse()
 name.reverse()
 chat.reverse()
-
-while True:
+f.close()
+while stop != True:
     menu()
+exit("程式結束")
